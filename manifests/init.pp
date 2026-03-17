@@ -45,6 +45,7 @@ class orchestrator_cache {
     group  => 'root',
     mode   => '0644',
     source => 'puppet:///modules/orchestrator_cache/orchestrator_cache_rules.inc',
+    require => File['/etc/puppetlabs/nginx/conf.d/includes/'],
   }
 
   # Insert include into PE's server block inside proxy.conf
