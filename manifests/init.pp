@@ -22,12 +22,12 @@ class orchestrator_cache {
 
   # Location-level snippet
   file { '/etc/puppetlabs/nginx/conf.d/includes/orchestrator_cache.conf':
-    ensure   => file,
-    owner    => 'root',
-    group    => 'root',
-    mode     => '0644',
-    source   => 'puppet:///modules/orchestrator_cache/orchestrator_cache.conf',
-    requires => File['/etc/puppetlabs/nginx/conf.d/includes/'],
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    source  => 'puppet:///modules/orchestrator_cache/orchestrator_cache.conf',
+    require => File['/etc/puppetlabs/nginx/conf.d/includes/'],
   }
 
   # Insert include into PE's server block inside proxy.conf
