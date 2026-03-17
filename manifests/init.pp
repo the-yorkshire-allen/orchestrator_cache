@@ -4,7 +4,7 @@
 
 class orchestrator_cache {
   # HTTP-level cache definition (auto-included by nginx.conf)
-  file { '/etc/puppetlabs/nginx/includes/cache_http.conf':
+  file { '/etc/puppetlabs/nginx/conf.d/cache_http.conf':
     ensure  => file,
     owner   => 'root',
     group   => 'root',
@@ -56,14 +56,5 @@ class orchestrator_cache {
     value            => 'includes/orchestrator_cache.conf',
     server_context   => $facts['networking']['fqdn'],
   }
-
-
-pe_nginx::directive { 'include cache.conf for pesite2':
-  directive_ensure => 'present',
-  target           => '/etc/puppetlabs/nginx/conf.d/proxy.conf',
-  directive_name   => 'include',
-  value            => 'includes/cache_http.conf',
-  server_context   => $facts['networking']['fqdn'],
-}
 
 }
