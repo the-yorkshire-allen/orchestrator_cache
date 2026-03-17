@@ -1,4 +1,8 @@
-class orchestrator_class {
+#
+#
+#
+
+class orchestrator_cache {
   # HTTP-level cache definition (auto-included by nginx.conf)
   file { '/etc/puppetlabs/nginx/conf.d/cache_http.conf':
     ensure => file,
