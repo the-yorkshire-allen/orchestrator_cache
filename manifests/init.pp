@@ -35,7 +35,16 @@ class orchestrator_cache {
     group   => 'root',
     mode    => '0644',
     source  => 'puppet:///modules/orchestrator_cache/orchestrator_cache.conf',
-    require => File['/etc/puppetlabs/nginx/conf.d/includes/'],
+    require => [File['/etc/puppetlabs/nginx/conf.d/includes/'],File['/etc/puppetlabs/nginx/includes/orchestrator_cache_rules.inc']],
+  }
+
+  # Shared cache rules
+  file { '/etc/puppetlabs/nginx/includes/orchestrator_cache_rules.inc':
+    ensure => file,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => 'puppet:///modules/orchestrator_cache/orchestrator_cache_rules.inc',
   }
 
   # Insert include into PE's server block inside proxy.conf
