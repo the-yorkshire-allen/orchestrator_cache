@@ -9,7 +9,7 @@ class orchestrator_cache {
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
-    source => 'puppet:///modules/pe_nginx_cache/cache_http.conf',
+    source => 'puppet:///modules/orchestrator_cache/cache_http.conf',
   }
 
   # Location-level snippet
@@ -18,7 +18,7 @@ class orchestrator_cache {
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
-    source => 'puppet:///modules/pe_nginx_cache/orchestrator_cache.conf',
+    source => 'puppet:///modules/orchestrator_cache/orchestrator_cache.conf',
   }
 
   # Insert include into PE's server block inside proxy.conf
