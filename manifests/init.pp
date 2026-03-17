@@ -5,11 +5,19 @@
 class orchestrator_cache {
   # HTTP-level cache definition (auto-included by nginx.conf)
   file { '/etc/puppetlabs/nginx/conf.d/cache_http.conf':
-    ensure => file,
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    source  => 'puppet:///modules/orchestrator_cache/cache_http.conf',
+    require => File['/var/cache/nginx'],
+  }
+
+  file { '/var/cache/nginx':
+    ensure => directory,
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
-    source => 'puppet:///modules/orchestrator_cache/cache_http.conf',
   }
 
   # Location-level snippet
