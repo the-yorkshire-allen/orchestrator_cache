@@ -62,7 +62,7 @@ pe_nginx::directive { 'include cache.conf for pesite2':
   directive_ensure => 'present',
   target           => '/etc/puppetlabs/nginx/conf.d/proxy.conf',
   directive_name   => 'include',
-  value            => 'includes/cache.conf',
+  value            => 'includes/cache_http.conf',
   server_context   => $facts['networking']['fqdn'],
 }
 
