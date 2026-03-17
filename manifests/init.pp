@@ -13,12 +13,21 @@ class orchestrator_cache {
   }
 
   # Location-level snippet
-  file { '/etc/puppetlabs/nginx/conf.d/orchestrator_cache.conf':
-    ensure => file,
+  file { '/etc/puppetlabs/nginx/conf.d/includes/':
+    ensure => directory,
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
-    source => 'puppet:///modules/orchestrator_cache/orchestrator_cache.conf',
+  }
+
+  # Location-level snippet
+  file { '/etc/puppetlabs/nginx/conf.d/includes/orchestrator_cache.conf':
+    ensure   => file,
+    owner    => 'root',
+    group    => 'root',
+    mode     => '0644',
+    source   => 'puppet:///modules/orchestrator_cache/orchestrator_cache.conf',
+    requires => File['/etc/puppetlabs/nginx/conf.d/includes/'],
   }
 
   # Insert include into PE's server block inside proxy.conf
@@ -26,7 +35,7 @@ class orchestrator_cache {
     directive_ensure => 'present',
     target           => '/etc/puppetlabs/nginx/conf.d/proxy.conf',
     directive_name   => 'include',
-    value            => 'conf.d/orchestrator_cache.conf',
+    value            => 'conf.d/includes/orchestrator_cache.conf',
     server_context   => $facts['networking']['fqdn'],
   }
 }
