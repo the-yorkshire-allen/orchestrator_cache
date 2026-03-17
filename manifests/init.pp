@@ -26,7 +26,7 @@ class orchestrator_cache {
     directive_ensure => 'present',
     target           => '/etc/puppetlabs/nginx/conf.d/proxy.conf',
     directive_name   => 'include',
-    value            => 'orchestrator_cache.conf',
+    value            => 'conf.d/orchestrator_cache.conf',
     server_context   => $facts['networking']['fqdn'],
   }
 }
