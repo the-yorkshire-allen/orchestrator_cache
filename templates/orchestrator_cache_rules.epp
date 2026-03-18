@@ -1,0 +1,43 @@
+<%-# modules/orchestrator_cache/templates/orchestrator_cache_rules.epp -%>
+<%-# Parameters:
+     String $ttl_200          — TTL for 200 responses (e.g., "5s", "10s", "2m")
+     String $ttl_redirects    — TTL for 301/302 (e.g., "1m")
+     String $upstream         — upstream URL for proxy_pass (default "http://localhost:4430")
+     Boolean $ignore_set_cookie — if true, ignore Set-Cookie from upstream
+-%>
+
+# Upstream and basic proxy settings
+proxy_pass <%= $upstream %>;
+proxy_read_timeout 120;
+
+proxy_set_header X-SSL-Subject $ssl_client_s_dn;
+proxy_set_header X-Client-DN $ssl_client_s_dn;
+proxy_set_header X-Client-Verify $ssl_client_verify;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+# ---------- CACHING (Option B) ----------
+# Use the HTTP-level cache zone (already defined via proxy_cache_path in http{})
+proxy_cache            pe_api_cache;
+proxy_cache_lock       on;
+proxy_cache_use_stale  error timeout http_500 http_502 http_503 http_504 updating;
+
+# **Override upstream no-store/Expires** (scope limited to these locations)
+proxy_ignore_headers   Cache-Control Expires;
+
+# **Allow caching even with Authorization** (Option B)
+# (Intentionally not using proxy_no_cache/proxy_cache_bypass on $http_authorization)
+
+# TTLs — tune per endpoint; start small and adjust after observation
+proxy_cache_valid      200 <%= $ttl_200 %>;
+proxy_cache_valid      301 302 <%= $ttl_redirects %>;
+
+<% if $ignore_set_cookie { -%>
+# Keep Set-Cookie from disabling cache **only** if responses aren’t per-user
+proxy_ignore_headers   Set-Cookie;
+<% } -%>
+
+# Cache key: method is usually GET here; include method only if you vary by it
+proxy_cache_key        $scheme$host$request_uri;
+
+# Visibility: show HIT/MISS/BYPASS/EXPIRED
+add_header X-Proxy-Cache $upstream_cache_status always;
