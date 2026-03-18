@@ -1,10 +1,10 @@
-<%-# modules/orchestrator_cache/templates/orchestrator_cache_rules.epp -%>
-<%-# Parameters:
+<%# modules/orchestrator_cache/templates/orchestrator_cache_rules.epp %>
+<%# Parameters:
      String $ttl_200          — TTL for 200 responses (e.g., "5s", "10s", "2m")
      String $ttl_redirects    — TTL for 301/302 (e.g., "1m")
      String $upstream         — upstream URL for proxy_pass (default "http://localhost:4430")
      Boolean $ignore_set_cookie — if true, ignore Set-Cookie from upstream
--%>
+%>
 
 # Upstream and basic proxy settings
 proxy_pass <%= $upstream %>;
